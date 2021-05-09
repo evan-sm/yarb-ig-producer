@@ -1,5 +1,13 @@
 package main
 
+import "github.com/go-resty/resty/v2"
+
+type SuperAgent struct {
+	Client     *resty.Client
+	Users      []User
+	UserStruct User
+}
+
 type User struct {
 	Name   string `bson:"name" json:"name" binding:"required"`
 	Social struct {

@@ -6,16 +6,6 @@ import (
 	"log"
 )
 
-type SuperAgent struct {
-	Client     *resty.Client
-	Users      []User
-	UserStruct User
-}
-
-var (
-	YarbDBApiURL = fmt.Sprintf("%v:%v", YarbDBIp, YarbDBPort)
-)
-
 func New() *SuperAgent {
 	s := &SuperAgent{
 		Users:  make([]User, 0),

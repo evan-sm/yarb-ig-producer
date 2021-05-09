@@ -1,6 +1,9 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 var (
 	igSessionId       = os.Getenv("IG_SESSION_ID1")
@@ -10,4 +13,6 @@ var (
 	YarbMakabaApiURL  = os.Getenv("YARB_MAKABA_API_URL")
 	yarbBasicAuthUser = os.Getenv("YARB_BASIC_AUTH_USER")
 	yarbBasicAuthPass = os.Getenv("YARB_BASIC_AUTH_PASS")
+	YarbDBApiURL      = fmt.Sprintf("%v:%v", YarbDBIp, YarbDBPort)
+	Passcode          = os.Getenv("PASSCODE")
 )
