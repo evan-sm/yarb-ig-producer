@@ -63,6 +63,17 @@ func (s *SuperAgent) apiSendPayloadMakaba(p Payload) bool {
 	return false
 }
 
+func (s *SuperAgent) apiSendPayloadTelegram(p Payload) bool {
+	url := fmt.Sprintf("http://%v/yarb/telegram/post", YarbTelegramApiURL)
+	println("[post]:", url)
+	resp, err := s.Client.R().SetBody(p).Post(url)
+	println(resp.String(), err)
+	if resp.StatusCode() == 200 {
+		return true
+	}
+	return false
+}
+
 func (s *SuperAgent) apiUpdateIGStories(p Payload) bool {
 	url := fmt.Sprintf("http://%v/yarb/user/name/%v/date/instagram_stories/%v", YarbDBApiURL, p.Person, p.Timestamp)
 	println("[get]:", url)

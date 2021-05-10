@@ -26,7 +26,7 @@ func (s *SuperAgent) checkNewPosts() {
 		//		for k, v := range s.User {
 		//			log.Printf("k: %v; v:%v\n", k, v)
 		//		}
-		time.Sleep(10 * time.Minute)
+		time.Sleep(5 * time.Minute)
 	}
 }
 
@@ -67,8 +67,10 @@ func (s *SuperAgent) getNewIGStories(stories []byte) {
 		//pp.Println(payload)
 		println("Trying to send payload to consumers")
 
+		// Send payload
 		if user.Setting.InstagramStories {
 			println("Stories reposts enabled")
+			_ = s.apiSendPayloadTelegram(payload)
 			if user.Setting.Makaba {
 				println("Makaba reposts enabled")
 				ok := s.apiSendPayloadMakaba(payload)

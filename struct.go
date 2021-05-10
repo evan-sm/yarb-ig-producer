@@ -33,16 +33,16 @@ type User struct {
 
 type Payload struct {
 	// Body
-	Person    string
-	Timestamp int
-	Caption   string
-	From      string
-	Type      string
-	Source    string
+	Person    string `json:"person"`
+	Timestamp int    `json:"timestamp`
+	Caption   string `json:"caption"`
+	From      string `json:"from"`
+	Type      string `json:"type"`
+	Source    string `json:"source"`
 	Files     []string
 
 	// Destination
-	TelegramChanID int64
-	Board          string
-	Thread         string
+	TelegramChanID int64  `json:"telegram_chan_id"`
+	Board          string `json:"board"`
+	Thread         string `json:"thread"`
 }
