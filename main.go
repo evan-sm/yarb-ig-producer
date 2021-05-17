@@ -37,6 +37,7 @@ func (s *SuperAgent) checkIGStories() {
 		userlist = append(userlist, v.Social.InstagramID)
 	}
 	stories := ig.Get(igSessionId).Stories(userlist)
+	//	println(string(stories))
 	s.getNewIGStories(stories)
 }
 
@@ -56,10 +57,10 @@ func (s *SuperAgent) getNewIGStories(stories []byte) {
 		items, err := dropOldStories(json, latest_reel_media)
 		if err != nil {
 			log.Printf("%v", err) // All posts are old
-			return false
+			return true
 		}
 		if items == "" {
-			return false
+			return true
 		}
 		//println("\n\nitems:", items[0:100])
 

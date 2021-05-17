@@ -10,3 +10,5 @@ require (
 	github.com/tidwall/gjson v1.7.5
 	github.com/wmw9/ig v0.0.3
 )
+
+replace github.com/wmw9/go-makaba => /home/wmw/git/go/go-makaba
