@@ -71,11 +71,11 @@ func (s *SuperAgent) getNewIGStories(stories []byte) {
 		// Send payload
 		if user.Setting.InstagramStories {
 			println("Stories reposts enabled")
-			_ = s.apiSendPayloadTelegram(payload)
 			if user.Setting.Makaba {
 				println("Makaba reposts enabled")
 				ok := s.apiSendPayloadMakaba(payload)
 				if ok {
+					_ = s.apiSendPayloadTelegram(payload)
 					println("Trying to update Instagram Stories timestamp")
 					ok := s.apiUpdateIGStories(payload)
 					if !ok {
