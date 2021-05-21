@@ -26,7 +26,7 @@ func (s *SuperAgent) checkNewPosts() {
 		//		for k, v := range s.User {
 		//			log.Printf("k: %v; v:%v\n", k, v)
 		//		}
-		time.Sleep(5 * time.Minute)
+		time.Sleep(10 * time.Minute)
 	}
 }
 
