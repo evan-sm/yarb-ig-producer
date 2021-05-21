@@ -6,6 +6,7 @@ type SuperAgent struct {
 	Client     *resty.Client
 	Users      []User
 	UserStruct User
+	Errors     []error
 }
 
 type User struct {

@@ -3,27 +3,29 @@ package main
 import (
 	"fmt"
 	"github.com/go-resty/resty/v2"
-	"log"
+	log "github.com/sirupsen/logrus"
 )
 
 func New() *SuperAgent {
 	s := &SuperAgent{
 		Users:  make([]User, 0),
 		Client: &resty.Client{},
+		Errors: nil,
 	}
 	s.Client = resty.New()
 	s.Client.SetBasicAuth(yarbBasicAuthUser, yarbBasicAuthPass)
 	return s
 }
 
-func (s *SuperAgent) apiGetAllUsers() *SuperAgent {
-	users := fmt.Sprintf("http://%v/yarb/users", YarbDBApiURL)
-	log.Printf("[get]: %v", users)
-	resp, err := s.Client.R().SetResult(&s.Users).Get(users)
-	failOnError(err, "get failed")
+func (s *SuperAgent) apiGetAllUsers() (*SuperAgent, error) {
+	url := fmt.Sprintf("http://%v/yarb/users", YarbDBApiURL)
+	log.Debug("Getting all enabled users from YARB-DB: ", url)
 
-	log.Printf("%v", resp.StatusCode())
-	return s
+	if _, err := s.Client.R().SetResult(&s.Users).Get(url); err != nil {
+		return s, err
+	}
+
+	return s, nil
 }
 
 func (s *SuperAgent) apiGetIGStoriesTsByID(id string) string {
