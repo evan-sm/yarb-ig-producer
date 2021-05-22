@@ -3,12 +3,14 @@ package main
 import (
 	"errors"
 	"fmt"
+
 	//"github.com/k0kubun/pp"
+	"strconv"
+	"time"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/tidwall/gjson"
 	"github.com/wmw9/ig"
-	"strconv"
-	"time"
 )
 
 func (s *SuperAgent) checkIGStories() {
@@ -52,9 +54,9 @@ func (s *SuperAgent) getNewIGStories(stories []byte) {
 				log.Debugf("%v makaba reposts are enabled", user.Name)
 				if ok := s.apiSendPayloadMakaba(payload); ok {
 					_ = s.apiSendPayloadTelegram(payload)
-					println("Trying to update Instagram Stories timestamp")
+					log.Info("Trying to update Instagram Stories timestamp")
 					if ok := s.apiUpdateIGStories(payload); ok {
-						panic("Couldn't update IG Stories timestamp")
+						log.Errorf("Couldn't update IG Stories timestamp\n")
 					}
 				}
 			}
@@ -94,22 +96,20 @@ func preparePayloadFromIGStories(u User, items string) Payload {
 		switch gjson.Get(value.String(), "media_type").String() {
 		case "2": // video
 			if count == 4 {
-				return false
+				return false // exit
 			}
 			count++
-			//log.Printf("count: %v", count)
 			url := gjson.Get(value.String(), "video_versions.0.url").String()
-			//log.Printf("Got video story: %v", url)
+			log.Tracef("Got video story: %v", url)
 			files = append(files, url) // add .mp4
 			p.Timestamp = getTimestampIGStory(value.String())
 		case "1": // image
 			if count == 4 {
-				return false
+				return false // exit
 			}
 			count++
-			//log.Printf("count: %v", count)
 			url := gjson.Get(value.String(), "image_versions2.candidates.0.url").String()
-			//log.Printf("Got image story: %v", url)
+			log.Tracef("Got image story: %v", url)
 			files = append(files, url) // add .jpg
 			p.Timestamp = getTimestampIGStory(value.String())
 		}
@@ -132,7 +132,7 @@ func getTimestampIGStory(item string) int {
 	time64 := gjson.Get(item, "taken_at").String()
 	time, err := strconv.Atoi(time64)
 	if err != nil {
-		log.Printf("%v", err)
+		log.Printf("%v\n", err)
 	}
 	return time
 }

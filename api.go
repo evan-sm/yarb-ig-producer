@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
 )
@@ -29,13 +30,13 @@ func (s *SuperAgent) apiGetAllUsers() (*SuperAgent, error) {
 }
 
 func (s *SuperAgent) apiGetIGStoriesTsByID(id string) string {
-	log.Printf("req %v/user/id/:id/date/instagram_stories\n", YarbDBApiURL)
 	url := fmt.Sprintf("http://%v/yarb/user/id/%v/date/instagram_stories", YarbDBApiURL, id)
-	log.Printf("[get]: %v", url)
+	log.Debugf("%v\n", url)
 	resp, err := s.Client.R().Get(url)
-	failOnError(err, "get failed")
+	if err != nil || resp.StatusCode() != 200 {
+		log.Errorf("err: %v\nstatus: %v\n resp.String(): %v", err, resp.StatusCode(), resp.String())
+	}
 
-	//log.Println(resp.Status, resp.String())
 	return resp.String()
 }
 
@@ -44,45 +45,33 @@ func (s *SuperAgent) apiGetUserByIstagramID(id string) User {
 	url := fmt.Sprintf("http://%v/yarb/user/ig_id/%v", YarbDBApiURL, id)
 	log.Printf("[get]: %v", url)
 	resp, err := s.Client.R().SetResult(&s.UserStruct).Get(url)
-	println("\n\nresp.String:", resp.String())
-	if err != nil {
-		println(resp.Status, resp.Body())
-		panic(err)
+	if err != nil || resp.StatusCode() != 200 {
+		log.Errorf("err: %v\nstatus: %v\n resp.String(): %v", err, resp.StatusCode(), resp.String())
 	}
-	failOnError(err, "get failed")
 
 	return s.UserStruct
 }
 
 func (s *SuperAgent) apiSendPayloadMakaba(p Payload) bool {
 	url := fmt.Sprintf("http://%v/makaba/post", YarbMakabaApiURL)
-	println("[post]:", url)
+	log.Debugf("%v\n", url)
 	resp, err := s.Client.R().SetBody(p).Post(url)
-	println(resp.String(), err)
-	if resp.StatusCode() == 200 {
-		return true
-	}
-	return false
+	log.Infof("%v:\n%v", resp.String(), err)
+	return resp.StatusCode() == 200
 }
 
 func (s *SuperAgent) apiSendPayloadTelegram(p Payload) bool {
 	url := fmt.Sprintf("http://%v/yarb/telegram/post", YarbTelegramApiURL)
-	println("[post]:", url)
+	log.Debugf("%v\n", url)
 	resp, err := s.Client.R().SetBody(p).Post(url)
-	println(resp.String(), err)
-	if resp.StatusCode() == 200 {
-		return true
-	}
-	return false
+	log.Infof("%v:\n%v", resp.String(), err)
+	return resp.StatusCode() == 200
 }
 
 func (s *SuperAgent) apiUpdateIGStories(p Payload) bool {
 	url := fmt.Sprintf("http://%v/yarb/user/name/%v/date/instagram_stories/%v", YarbDBApiURL, p.Person, p.Timestamp)
-	println("[get]:", url)
+	log.Debugf("%v\n", url)
 	resp, err := s.Client.R().Get(url)
-	println(resp.String(), err)
-	if resp.StatusCode() == 200 {
-		return true
-	}
-	return false
+	log.Infof("%v:\n%v", resp.String(), err)
+	return resp.StatusCode() == 200
 }
