@@ -73,15 +73,9 @@ func dropOldStories(json string, ts string) (string, error) {
 	path := fmt.Sprintf(`items.#(taken_at>%v)#`, ts)
 	items := gjson.Get(json, path).String()
 	if items == "[]" {
-		return "", errors.New("All IG stories are old.")
+		return "", errors.New("all IG stories are old")
 	}
 	return items, nil
-}
-
-func failOnError(err error, msg string) {
-	if err != nil {
-		log.Fatalf("%s: %s", msg, err)
-	}
 }
 
 func preparePayloadFromIGStories(u User, items string) Payload {
