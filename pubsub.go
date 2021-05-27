@@ -10,9 +10,10 @@ import (
 	//	"google.golang.org/grpc/status"
 	"cloud.google.com/go/pubsub"
 	log "github.com/sirupsen/logrus"
+	yarb "github.com/wmw9/yarb-struct"
 )
 
-func SendToPubSub(projectID, topicID string, p Payload) error {
+func SendToPubSub(projectID, topicID string, p yarb.Payload) error {
 	msg, _ := json.Marshal(p) // Convert payload to json bytes
 
 	ctx := context.Background()

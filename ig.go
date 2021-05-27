@@ -11,6 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/tidwall/gjson"
 	"github.com/wmw9/ig"
+	yarb "github.com/wmw9/yarb-struct"
 )
 
 func (s *SuperAgent) checkIGStories() {
@@ -91,10 +92,10 @@ func dropOldStories(json string, ts string) (string, error) {
 	return items, nil
 }
 
-func preparePayloadFromIGStories(u User, items string) Payload {
+func preparePayloadFromIGStories(u yarb.User, items string) yarb.Payload {
 	var files []string
 	var count int
-	p := Payload{}
+	p := yarb.Payload{}
 
 	result := gjson.Get(items, "@valid")
 	result.ForEach(func(key, value gjson.Result) bool {

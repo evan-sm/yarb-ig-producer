@@ -11,7 +11,8 @@ require (
 	github.com/sirupsen/logrus v1.8.1
 	github.com/tidwall/gjson v1.7.5
 	github.com/wmw9/ig v0.0.3
-	google.golang.org/grpc v1.38.0
+	github.com/wmw9/yarb-struct v0.0.1
+	google.golang.org/grpc v1.38.0 // indirect
 )
 
 replace github.com/wmw9/go-makaba => /home/wmw/git/go/go-makaba

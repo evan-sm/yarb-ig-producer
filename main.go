@@ -1,9 +1,18 @@
 package main
 
 import (
+	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
+	yarb "github.com/wmw9/yarb-struct"
 	"time"
 )
+
+type SuperAgent struct {
+	Client     *resty.Client
+	Users      []yarb.User
+	UserStruct yarb.User
+	Errors     []error
+}
 
 const sleepTime = 10 * time.Minute
 
