@@ -49,16 +49,29 @@ func (s *SuperAgent) getNewIGStories(stories []byte) {
 
 		// Send payload
 		if user.Setting.InstagramStories {
+
 			log.Debugf("%v instagram stories reposts are enabled", user.Name)
+			if err := SendToPubSub("yarb-313112", "yarb-telegram", payload); err != nil {
+				log.Errorf("SendToPubSub telegram failed: %v", err)
+			}
+
 			if user.Setting.Makaba {
+
 				log.Debugf("%v makaba reposts are enabled", user.Name)
-				if ok := s.apiSendPayloadMakaba(payload); ok {
-					_ = s.apiSendPayloadTelegram(payload)
-					log.Info("Trying to update Instagram Stories timestamp")
-					if ok := s.apiUpdateIGStories(payload); ok {
-						log.Errorf("Couldn't update IG Stories timestamp\n")
-					}
+				//if ok := s.apiSendPayloadMakaba(payload); ok {
+				//	_ = s.apiSendPayloadTelegram(payload)
+				//	log.Info("Trying to update Instagram Stories timestamp")
+				//	if ok := s.apiUpdateIGStories(payload); ok {
+				//		log.Errorf("Couldn't update IG Stories timestamp\n")
+				//	}
+				//}
+				if err := SendToPubSub("yarb-313112", "yarb-makaba", payload); err != nil {
+					log.Errorf("SendToPubSub makaba failed: %v", err)
 				}
+				//	log.Info("Trying to update Instagram Stories timestamp")
+				//	if ok := s.apiUpdateIGStories(payload); ok {
+				//		log.Errorf("Couldn't update IG Stories timestamp\n")
+				//	}
 			}
 		}
 

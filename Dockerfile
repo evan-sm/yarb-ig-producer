@@ -15,6 +15,7 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /etc/passwd /etc/passwd
 COPY --from=build /etc/group /etc/group
 COPY --from=build /app/yarb-ig-producer /app/yarb-ig-producer
+COPY --from=build /app/google_app_creds_yarb.json /app/google_app_creds_yarb.json
 
 USER 1000:1000
 

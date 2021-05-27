@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 
+	//"context"
 	"github.com/go-resty/resty/v2"
 	log "github.com/sirupsen/logrus"
+	//	"io"
 )
 
 func New() *SuperAgent {
